@@ -5,7 +5,7 @@ from contextlib import closing
 
 class QuestionManager:
 
-    def __init__(self, table, limit=1000):
+    def __init__(self, table='french_words',limit=1000):
         self.db = 'data/flashcards.db'
         self.table = table
         self.limit = limit
@@ -27,18 +27,20 @@ class QuestionManager:
 
     def choose_question(self):
         self.question = self.unanswered_questions.sample()
-        print(self.question)
         return self.question.to_dict(orient="records")
 
     def execute_query(self, query):
+        self.connect()
         with closing(self.conn.cursor()) as cur:
             try:
                 cur.execute(query)
             except Exception as e:
+                print(query)
                 print("Error:", e)
             else:
                 self.conn.commit()
                 print("Query executed successfully")
+        self.close()
 
     def move_correct_answers(self):
         if self.answered_questions is not None:
@@ -60,6 +62,6 @@ class QuestionManager:
                 print("Wrong Dummy!")
             return
 
-        query = "insert into table user_attempts (topic, question_id, correct)" \
-                f"values{self.table, self.question.id, correct};"
+        query = "insert into user_attempts(topic, question_id, correct)" \
+                f"values{self.table, self.question.id.iloc[0], correct};"
         self.execute_query(query)
