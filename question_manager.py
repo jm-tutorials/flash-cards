@@ -20,7 +20,11 @@ class QuestionManager:
 
     def get_questions(self):
         self.connect()
-        query = f"select * from {self.table} limit {self.limit};"
+        query = f"select a.* from {self.table} a " \
+                f"left join user_attempts ua on a.id = ua.question_id and ua.correct = false and ua.topic = '{self.table}' " \
+                f"where ua.question_id is null " \
+                f"limit {self.limit};"
+
         self.unanswered_questions = pd.read_sql_query(query, self.conn)
         self.close()
         self.choose_question()
