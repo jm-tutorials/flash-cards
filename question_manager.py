@@ -50,7 +50,7 @@ class QuestionManager:
 
         self.unanswered_questions.drop(self.question.index, inplace=True)
 
-    def record_answer(self, correct, test=False):
+    def record_answer(self, correct, saw_answer, timeout, test=False):
 
         if correct:
             self.move_correct_answers()
@@ -62,6 +62,6 @@ class QuestionManager:
                 print("Wrong Dummy!")
             return
 
-        query = "insert into user_attempts(topic, question_id, correct)" \
-                f"values{self.table, self.question.id.iloc[0], correct};"
+        query = "insert into user_attempts(topic, question_id, correct, saw_answer, timeout)" \
+                f"values{self.table, self.question.id.iloc[0], correct, saw_answer, timeout};"
         self.execute_query(query)

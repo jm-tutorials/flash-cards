@@ -18,7 +18,8 @@ window.config(padx=50, pady=50, bg=BACKGROUND_COLOR)
 
 canvas = tk.Canvas(window, width=800, height=526)
 
-cm = CardManager(canvas)
+# create cards and timer
+cm = CardManager(window, canvas)
 
 canvas.config(bg=BACKGROUND_COLOR, highlightthickness=0)
 canvas.grid(row=0, column=0, columnspan=3)
@@ -31,7 +32,7 @@ wrong_button.grid(row=1, column=0)
 show_image = tk.PhotoImage(file="images/eye_2.png")
 new_show_image = show_image.zoom(2, 2)
 new_show_image = new_show_image.subsample(3, 3)
-show_answer_button = tk.Button(image=new_show_image, width=100, height=100, command=cm.flip_card)
+show_answer_button = tk.Button(image=new_show_image, width=100, height=100, command=cm.show_answer)
 show_answer_button.config(bd=0, highlightthickness=0)
 show_answer_button.grid(row=1, column=1)
 
